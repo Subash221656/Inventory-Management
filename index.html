@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Material Stocking App</title>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.15/Babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js"></script>
+  <style>
+    .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
+    .bg-white { background-color: #fff; }
+    .shadow { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
+    .rounded { border-radius: 6px; }
+    .rounded-md { border-radius: 4px; }
+    .p-4 { padding: 16px; }
+    .p-6 { padding: 24px; }
+    .p-2 { padding: 8px; }
+    .px-4 { padding-left: 16px; padding-right: 16px; }
+    .py-2 { padding-top: 8px; padding-bottom: 8px; }
+    .px-3 { padding-left: 12px; padding-right: 12px; }
+    .py-1 { padding-top: 4px; padding-bottom: 4px; }
+    .p-1 { padding: 4px; }
+    .px-1 { padding-left: 4px; padding-right: 4px; }
+    .py-0\.5 { padding-top: 2px; padding-bottom: 2px; }
+    .mb-6 { margin-bottom: 24px; }
+    .mb-4 { margin-bottom: 16px; }
+    .mt-4 { margin-top: 16px; }
+    .mt-2 { margin-top: 8px; }
+    .mt-1 { margin-top: 4px; }
+    .mb-2 { margin-bottom: 8px; }
+    .flex { display: flex; }
+    .flex-1 { flex: 1; }
+    .justify-between { justify-content: space-between; }
+    .items-center { align-items: center; }
+    .items-start { align-items: flex-start; }
+    .gap-2 { gap: 8px; }
+    .gap-3 { gap: 12px; }
+    .gap-4 { gap: 16px; }
+    .gap-1 { gap: 4px; }
+    .space-y-4 > * + * { margin-top: 16px; }
+    .space-y-2 > * + * { margin-top: 8px; }
+    .space-y-1 > * + * { margin-top: 4px; }
+    .text-2xl { font-size: 24px; }
+    .text-xl { font-size: 20px; }
+    .text-lg { font-size: 18px; }
+    .text-sm { font-size: 14px; }
+    .text-xs { font-size: 12px; }
+    .font-bold { font-weight: 700; }
+    .font-semibold { font-weight: 600; }
+    .font-medium { font-weight: 500; }
+    .text-gray-800 { color: #1f2937; }
+    .text-gray-700 { color: #374151; }
+    .text-gray-600 { color: #4b5563; }
+    .text-gray-400 { color: #9ca3af; }
+    .text-indigo-600 { color: #4f46e5; }
+    .text-red-600 { color: #dc2626; }
+    .text-green-600 { color: #16a34a; }
+    .text-orange-600 { color: #ea580c; }
+    .text-blue-600 { color: #2563eb; }
+    .text-green-800 { color: #166534; }
+    .text-red-800 { color: #991b1b; }
+    .text-indigo-800 { color: #3730a3; }
+    .bg-indigo-600 { background-color: #4f46e5; }
+    .bg-green-600 { background-color: #16a34a; }
+    .bg-red-600 { background-color: #dc2626; }
+    .bg-green-700 { background-color: #15803d; }
+    .bg-red-700 { background-color: #b91c1c; }
+    .bg-indigo-700 { background-color: #4338ca; }
+    .bg-gray-50 { background-color: #f9fafb; }
+    .bg-red-50 { background-color: #fef2f2; }
+    .bg-orange-50 { background-color: #fff7ed; }
+    .bg-blue-50 { background-color: #eff6ff; }
+    .bg-green-50 { background-color: #f0fdf4; }
+    .bg-gray-200 { background-color: #e5e7eb; }
+    .hover\:bg-indigo-700:hover { background-color: #4338ca; }
+    .hover\:bg-green-700:hover { background-color: #15803d; }
+    .hover\:bg-red-700:hover { background-color: #b91c1c; }
+    .hover\:bg-white\/20:hover { background-color: rgba(255,255,255,0.2); }
+    .hover\:text-indigo-600:hover { color: #4f46e5; }
+    .hover\:text-red-600:hover { color: #dc2626; }
+    .hover\:text-green-800:hover { color: #166534; }
+    .hover\:text-red-800:hover { color: #991b1b; }
+    .hover\:text-indigo-800:hover { color: #3730a3; }
+    .border { border-width: 1px; }
+    .border-gray-300 { border-color: #d1d5db; }
+    .rounded { border-radius: 6px; }
+    .rounded-md { border-radius: 4px; }
+    .w-full { width: 100%; }
+    .w-16 { width: 64px; }
+    .w-4 { width: 16px; }
+    .h-4 { height: 16px; }
+    .h-2 { height: 8px; }
+    .text-white { color: #fff; }
+    .focus\:outline-none:focus { outline: none; }
+    .focus\:ring-2:focus { outline: none; box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.5); }
+    .focus\:ring-indigo-500:focus { outline: none; box-shadow: 0 0 0 2px #6366f1; }
+    .transition-colors { transition: color 0.2s, background-color 0.2s; }
+    .grid { display: grid; }
+    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .md\:grid-cols-2 { @media (min-width: 768px) { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    .lg\:grid-cols-3 { @media (min-width: 1024px) { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    .text-center { text-align: center; }
+    .py-8 { padding-top: 32px; padding-bottom: 32px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    const { Plus, Trash2, Edit2, Check, X, Package, Clipboard, * const { Plus, Trash2, Edit2, Check, X, Package, Clipboard, FileText, Download, Calculator, TrendingUp } = window.lucide;
+
+    const MaterialStockingApp = () => {
+      const [categories, setCategories] = useState(() => {
+        const saved = localStorage.getItem('materialStockingData');
+        return saved ? JSON.parse(saved) : {
+          'Office Supplies': [
+            { id: 1, name: 'Printer Paper', checked: false, inventorySet: 10, currentStock: 5, unit: 'reams' },
+            { id: 2, name: 'Ink Cartridges', checked: true, inventorySet: 2, currentStock: 3, unit: 'pieces' },
+            { id: 3, name: 'Pens & Pencils', checked: false, inventorySet: 20, currentStock: 8, unit: 'pieces' }
+          ],
+          'Cleaning Supplies': [
+            { id: 4, name: 'Disinfectant', checked: false, inventorySet: 5, currentStock: 2, unit: 'bottles' },
+            { id: 5, name: 'Paper Towels', checked: true, inventorySet: 8, currentStock: 12, unit: 'rolls' },
+            { id: 6, name: 'Trash Bags', checked: false, inventorySet: 3, currentStock: 1, unit: 'boxes' }
+          ],
+          'Kitchen Items': [
+            { id: 7, name: 'Coffee', checked: false, inventorySet: 2, currentStock: 0, unit: 'kg' },
+            { id: 8, name: 'Disposable Cups', checked: false, inventorySet: 200, currentStock: 50, unit: 'pieces' }
+          ]
+        };
+      });
+      const [newCategoryName, setNewCategoryName] = useState('');
+      const [newItemName, setNewItemName] = useState('');
+      const [newItemInventorySet, setNewItemInventorySet] = useState('');
+      const [newItemStock, setNewItemStock] = useState('');
+      const [newItemUnit, setNewItemUnit] = useState('');
+      const [editingItem, setEditingItem] = useState(null);
+      const [editingCategory, setEditingCategory] = useState(null);
+      const [activeCategory, setActiveCategory] = useState('');
+      const [showStockUpdate, setShowStockUpdate] = useState({});
+      const [stockUpdateValues, setStockUpdateValues] = useState({});
+      const [editFormValues, setEditFormValues] = useState({});
+
+      useEffect(() => {
+        localStorage.setItem('materialStockingData', JSON.stringify(categories));
+      }, [categories]);
+
+      const generateId = () => Date.now() + Math.random();
+
+      const addCategory = () => {
+        if (newCategoryName.trim() && !categories[newCategoryName.trim()]) {
+          setCategories({
+            ...categories,
+            [newCategoryName.trim()]: []
+          });
+          setNewCategoryName('');
+        }
+      };
+
+      const deleteCategory = (categoryName) => {
+        const newCategories = { ...categories };
+        delete newCategories[categoryName];
+        setCategories(newCategories);
+        if (activeCategory === categoryName) {
+          setActiveCategory('');
+        }
+      };
+
+      const renameCategory = (oldName, newName) => {
+        if (newName.trim() && newName !== oldName && !categories[newName]) {
+          const newCategories = { ...categories };
+          newCategories[newName] = newCategories[oldName];
+          delete newCategories[oldName];
+          setCategories(newCategories);
+          if (activeCategory === oldName) {
+            setActiveCategory(newName);
+          }
+        }
+        setEditingCategory(null);
+      };
+
+      const addItem = (categoryName) => {
+        if (newItemName.trim() && newItemInventorySet && newItemStock !== '' && newItemUnit.trim()) {
+          setCategories({
+            ...categories,
+            [categoryName]: [
+              ...categories[categoryName],
+              {
+                id: generateId(),
+                name: newItemName.trim(),
+                checked: false,
+                inventorySet: parseFloat(newItemInventorySet),
+                currentStock: parseFloat(newItemStock),
+                unit: newItemUnit.trim()
+              }
+            ]
+          });
+          setNewItemName('');
+          setNewItemInventorySet('');
+          setNewItemStock('');
+          setNewItemUnit('');
+        }
+      };
+
+      const deleteItem = (categoryName, itemId) => {
+        setCategories({
+          ...categories,
+          [categoryName]: categories[categoryName].filter(item => item.id !== itemId)
+        });
+      };
+
+      const toggleItem = (categoryName, itemId) => {
+        setCategories({
+          ...categories,
+          [categoryName]: categories[categoryName].map(item =>
+            item.id === itemId ? { ...item, checked: !item.checked } : item
+          )
+        });
+      };
+
+      const updateItem = (categoryName, itemId, updates) => {
+        setCategories({
+          ...categories,
+          [categoryName]: categories[categoryName].map(item =>
+            item.id === itemId ? { ...item, ...updates } : item
+          )
+        });
+      };
+
+      const startEditingItem = (item) => {
+        setEditingItem(item.id);
+        setEditFormValues({
+          name: item.name,
+          inventorySet: item.inventorySet,
+          currentStock: item.currentStock,
+          unit: item.unit
+        });
+      };
+
+      const saveEditedItem = (categoryName, itemId) => {
+        updateItem(categoryName, itemId, editFormValues);
+        setEditingItem(null);
+        setEditFormValues({});
+      };
+
+      const cancelEditing = () => {
+        setEditingItem(null);
+        setEditFormValues({});
+      };
+
+      const updateStock = (categoryName, itemId) => {
+        const newStock = stockUpdateValues[itemId];
+        if (newStock !== '' && !isNaN(newStock)) {
+          updateItem(categoryName, itemId, { currentStock: parseFloat(newStock) });
+          setShowStockUpdate({ ...showStockUpdate, [itemId]: false });
+          setStockUpdateValues({ ...stockUpdateValues, [itemId]: '' });
+        }
+      };
+
+      const calculateRecommendedOrder = (item) => {
+        const orderPredicted = Math.max(0, item.inventorySet - item.currentStock);
+        const weeksOfStock = item.currentStock / (item.inventorySet / 2);
+        const urgency = weeksOfStock < 1 ? 'Critical' : weeksOfStock < 2 ? 'High' : weeksOfStock < 4 ? 'Medium' : 'Low';
+        return {
+          orderPredicted,
+          weeksOfStock: Math.round(weeksOfStock * 10) / 10,
+          urgency
+        };
+      };
+
+      const getCategoryStats = (categoryName) => {
+        const items = categories[categoryName];
+        const total = items.length;
+        const checked = items.filter(item => item.checked).length;
+        const lowStock = items.filter(item => {
+          const calc = calculateRecommendedOrder(item);
+          return calc.urgency === 'Critical' || calc.urgency === 'High';
+        }).length;
+        return { total, checked, lowStock };
+      };
+
+      const generatePDFReport = () => {
+        const reportData = [];
+        const currentDate = new Date().toLocaleDateString();
+        Object.entries(categories).forEach(([categoryName, items]) => {
+          items.forEach(item => {
+            const calc = calculateRecommendedOrder(item);
+            reportData.push({
+              category: categoryName,
+              item: item.name,
+              unit: item.unit,
+              inventorySet: item.inventorySet,
+              currentStock: item.currentStock,
+              weeksOfStock: calc.weeksOfStock,
+              orderPredicted: calc.orderPredicted,
+              urgency: calc.urgency
+            });
+          });
+        });
+        const urgencyOrder = { 'Critical': 1, 'High': 2, 'Medium': 3, 'Low': 4 };
+        reportData.sort((a, b) => urgencyOrder[a.urgency] - urgencyOrder[b.urgency]);
+        const htmlContent = `
+          <html>
+            <head>
+              <title>Material Stocking Report</title>
+              <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                h1, h2 { text-align: center; }
+                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; }
+              </style>
+            </head>
+            <body>
+              <h1>Material Stocking Report</h1>
+              <p>Generated on: ${currentDate}</p>
+              <h2>Summary</h2>
+              <p>Total Items: ${reportData.length}</p>
+              <p>Critical Stock Items: ${reportData.filter(item => item.urgency === 'Critical').length}</p>
+              <p>High Priority Items: ${reportData.filter(item => item.urgency === 'High').length}</p>
+              <table>
+                <tr>
+                  <th>Category</th><th>Item</th><th>Unit</th><th>Inventory Set</th><th>Current Stock</th><th>Weeks of Stock</th><th>Order Predicted</th><th>Urgency</th>
+                </tr>
+                ${reportData.map(item => `
+                  <tr>
+                    <td>${item.category}</td>
+                    <td>${item.item}</td>
+                    <td>${item.unit}</td>
+                    <td>${item.inventorySet}</td>
+                    <td>${item.currentStock}</td>
+                    <td>${item.weeksOfStock}</td>
+                    <td>${item.orderPredicted}</td>
+                    <td>${item.urgency}</td>
+                  </tr>
+                `).join('')}
+              </table>
+            </body>
+          </html>
+        `;
+        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `Material_Stocking_Report_${currentDate.replace(/\//g, '-')}.html`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      };
+
+      return (
+        <div className="container mx-auto p-4">
+          <div className="bg-white shadow rounded-lg p-6 mb-6">
+            <div className="flex justify-between items-center mb-4">
+              <h1 className="text-2xl font-bold flex items-center gap-2">
+                <Package /> Material Stocking Management
+              </h1>
+              <button
+                onClick={generatePDFReport}
+                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+              >
+                <FileText /> Generate Report
+              </button>
+            </div>
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold mb-2">Add New Category</h2>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  placeholder="Enter category name..."
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  onKeyPress={(e) => e.key === 'Enter' && addCategory()}
+                />
+                <button
+                  onClick={addCategory}
+                  className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 flex items-center gap-2"
+                >
+                  <Plus /> Add Category
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Object.entries(categories).map(([categoryName, items]) => {
+              const stats = getCategoryStats(categoryName);
+              return (
+                <div key={categoryName} className="bg-white shadow rounded-lg p-4">
+                  <div className="flex justify-between items-center mb-4">
+                    {editingCategory === categoryName ? (
+                      <input
+                        type="text"
+                        defaultValue={categoryName}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            renameCategory(categoryName, e.target.value);
+                          }
+                        }}
+                        onBlur={(e) => renameCategory(categoryName, e.target.value)}
+                        autoFocus
+                      />
+                    ) : (
+                      <h2 className="text-xl font-semibold">{categoryName}</h2>
+                    )}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setEditingCategory(categoryName)}
+                        className="p-1 hover:bg-white/20 rounded transition-colors"
+                      >
+                        <Edit2 />
+                      </button>
+                      <button
+                        onClick={() => deleteCategory(categoryName)}
+                        className="p-1 hover:bg-white/20 rounded transition-colors"
+                      >
+                        <Trash2 />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="mb-4 flex gap-4 text-sm">
+                    <p className="flex items-center gap-1">
+                      <Clipboard size={14} /> {stats.checked} of {stats.total} items completed
+                    </p>
+                    {stats.lowStock > 0 && (
+                      <p className="flex items-center gap-1 text-red-600">
+                        <TrendingUp size={14} /> {stats.lowStock} low stock
+                      </p>
+                    )}
+                  </div>
+                  {stats.total > 0 && (
+                    <div className="mb-4 h-2 bg-gray-200 rounded">
+                      <div
+                        className="h-full bg-indigo-600 rounded"
+                        style={{ width: `${(stats.checked / stats.total) * 100}%` }}
+                      ></div>
+                    </div>
+                  )}
+                  <div className="space-y-4">
+                    {items.map((item) => {
+                      const calc = calculateRecommendedOrder(item);
+                      const urgencyColor = {
+                        'Critical': 'text-red-600 bg-red-50',
+                        'High': 'text-orange-600 bg-orange-50',
+                        'Medium': 'text-blue-600 bg-blue-50',
+                        'Low': 'text-green-600 bg-green-50'
+                      };
+                      return (
+                        <div key={item.id} className="flex items-start gap-3 p-2 rounded">
+                          <input
+                            type="checkbox"
+                            checked={item.checked}
+                            onChange={() => toggleItem(categoryName, item.id)}
+                            className="w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500 mt-1"
+                          />
+                          <div className="flex-1">
+                            {editingItem === item.id ? (
+                              <div className="space-y-2">
+                                <input
+                                  type="text"
+                                  value={editFormValues.name || ''}
+                                  onChange={(e) => setEditFormValues({ ...editFormValues, name: e.target.value })}
+                                  placeholder="Item name"
+                                  className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                />
+                                <div className="flex gap-2">
+                                  <input
+                                    type="number"
+                                    value={editFormValues.inventorySet || ''}
+                                    onChange={(e) => setEditFormValues({ ...editFormValues, inventorySet: parseFloat(e.target.value) || 0 })}
+                                    placeholder="Inventory Set"
+                                    className="px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                  />
+                                  <input
+                                    type="number"
+                                    value={editFormValues.currentStock || ''}
+                                    onChange={(e) => setEditFormValues({ ...editFormValues, currentStock: parseFloat(e.target.value) || 0 })}
+                                    placeholder="Current stock"
+                                    className="px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                  />
+                                  <input
+                                    type="text"
+                                    value={editFormValues.unit || ''}
+                                    onChange={(e) => setEditFormValues({ ...editFormValues, unit: e.target.value })}
+                                    placeholder="Unit"
+                                    className="px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                  />
+                                </div>
+                                <div className="flex gap-2">
+                                  <button
+                                    onClick={() => saveEditedItem(categoryName, item.id)}
+                                    className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 transition-colors flex items-center gap-1"
+                                  >
+                                    <Check size={14} /> Save
+                                  </button>
+                                  <button
+                                    onClick={cancelEditing}
+                                    className="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700 transition-colors flex items-center gap-1"
+                                  >
+                                    <X size={14} /> Cancel
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div>
+                                <div className="flex justify-between items-center">
+                                  <h3 className="font-medium">{item.name}</h3>
+                                  <div className="flex gap-2">
+                                    <button
+                                      onClick={() => startEditingItem(item)}
+                                      className="p-1 text-gray-400 hover:text-indigo-600 transition-colors"
+                                    >
+                                      <Edit2 size={14} />
+                                    </button>
+                                    <button
+                                      onClick={() => deleteItem(categoryName, item.id)}
+                                      className="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                                    >
+                                      <Trash2 size={14} />
+                                    </button>
+                                  </div>
+                                </div>
+                                <div className="text-sm text-gray-600 space-y-1 mt-1">
+                                  <p className="flex items-center gap-1">
+                                    <Package size=const { Plus, Trash2, Edit2, Check, X, Package, Clipboard, FileText, Download, Calculator, TrendingUp } = window.lucide;
+
+    const MaterialStockingApp = () => {
+      const [categories, setCategories] = useState(() => {
+        const saved = localStorage.getItem('materialStockingData');
+        return saved ? JSON.parse(saved) : {
+          'Office Supplies': [
+            { id: 1, name: 'Printer Paper', checked: false, inventorySet: 10, currentStock: 5, unit: 'reams' },
+            { id: 2, name: 'Ink Cartridges', checked: true, inventorySet: 2, currentStock: 3, unit: 'pieces' },
+            { id: 3, name: 'Pens & Pencils', checked: false, inventorySet: 20, currentStock: 8, unit: 'pieces' }
+          ],
+          'Cleaning Supplies': [
+            { id: 4, name: 'Disinfectant', checked: false, inventorySet: 5, currentStock: 2, unit: 'bottles' },
+            { id: 5, name: 'Paper Towels', checked: true, inventorySet: 8, currentStock: 12, unit: 'rolls' },
+            { id: 6, name: 'Trash Bags', checked: false, inventorySet: 3, currentStock: 1, unit: 'boxes' }
+          ],
+          'Kitchen Items': [
+            { id: 7, name: 'Coffee', checked: false, inventorySet: 2, currentStock: 0, unit: 'kg' },
+            { id: 8, name: 'Disposable Cups', checked: false, inventorySet: 200, currentStock: 50, unit: 'pieces' }
+          ]
+        };
+      });
+      const [newCategoryName, setNewCategoryName] = useState('');
+      const [newItemName, setNewItemName] = useState('');
+      const [newItemInventorySet, setNewItemInventorySet] = useState('');
+      const [newItemStock, setNewItemStock] = useState('');
+      const [newItemUnit, setNewItemUnit] = useState('');
+      const [editingItem, setEditingItem] = useState(null);
+      const [editingCategory, setEditingCategory] = useState(null);
+      const [activeCategory, setActiveCategory] = useState('');
+      const [showStockUpdate, setShowStockUpdate] = useState({});
+      const [stockUpdateValues, setStockUpdateValues] = useState({});
+      const [editFormValues, setEditFormValues] = useState({});
+
+      useEffect(() => {
+        localStorage.setItem('materialStockingData', JSON.stringify(categories));
+      }, [categories]);
+
+      const generateId = () => Date.now() + Math.random();
+
+      const addCategory = () => {
+        if (newCategoryName.trim() && !categories[newCategoryName.trim()]) {
+          setCategories({
+            ...categories,
+            [newCategoryName.trim()]: []
+          });
+          setNewCategoryName('');
+        }
+      };
+
+      const deleteCategory = (categoryName) => {
+        const newCategories = { ...categories };
+        delete newCategories[categoryName];
+        setCategories(newCategories);
+        if (activeCategory === categoryName) {
+          setActiveCategory('');
+        }
+      };
+
+      const renameCategory = (oldName, newName) => {
+        if (newName.trim() && newName !== oldName && !categories[newName]) {
+          const newCategories = { ...categories };
+          newCategories[newName] = newCategories[oldName];
+          delete newCategories[oldName];
+          setCategories(newCategories);
+          if (activeCategory === oldName) {
+            setActiveCategory(newName);
+          }
+        }
+        setEditingCategory(null);
+      };
+
+      const addItem = (categoryName) => {
+        if (newItemName.trim() && newItemInventorySet && newItemStock !== '' && newItemUnit.trim()) {
+          setCategories({
+            ...categories,
+            [categoryName]: [
+              ...categories[categoryName],
+              {
+                id: generateId(),
+                name: newItemName.trim(),
+                checked: false,
+                inventorySet: parseFloat(newItemInventorySet),
+                currentStock: parseFloat(newItemStock),
+                unit: newItemUnit.trim()
+              }
+            ]
+          });
+          setNewItemName('');
+          setNewItemInventorySet('');
+          setNewItemStock('');
+          setNewItemUnit('');
+        }
+      };
+
+      const deleteItem = (categoryName, itemId) => {
+        setCategories({
+          ...categories,
+          [categoryName]: categories[categoryName].filter(item => item.id !== itemId)
+        });
+      };
+
+      const toggleItem = (categoryName, itemId) => {
+        setCategories({
+          ...categories,
+          [categoryName]: categories[categoryName].map(item =>
+            item.id === itemId ? { ...item, checked: !item.checked } : item
+          )
+        });
+      };
+
+      const updateItem = (categoryName, itemId, updates) => {
+        setCategories({
+          ...categories,
+          [categoryName]: categories[categoryName].map(item =>
+            item.id === itemId ? { ...item, ...updates } : item
+          )
+        });
+      };
+
+      const startEditingItem = (item) => {
+        setEditingItem(item.id);
+        setEditFormValues({
+          name: item.name,
+          inventorySet: item.inventorySet,
+          currentStock: item.currentStock,
+          unit: item.unit
+        });
+      };
+
+      const saveEditedItem = (categoryName, itemId) => {
+        updateItem(categoryName, itemId, editFormValues);
+        setEditingItem(null);
+        setEditFormValues({});
+      };
+
+      const cancelEditing = () => {
+        setEditingItem(null);
+        setEditFormValues({});
+      };
+
+      const updateStock = (categoryName, itemId) => {
+        const newStock = stockUpdateValues[itemId];
+        if (newStock !== '' && !isNaN(newStock)) {
+          updateItem(categoryName, itemId, { currentStock: parseFloat(newStock) });
+          setShowStockUpdate({ ...showStockUpdate, [itemId]: false });
+          setStockUpdateValues({ ...stockUpdateValues, [itemId]: '' });
+        }
+      };
+
+      const calculateRecommendedOrder = (item) => {
+        const orderPredicted = Math.max(0, item.inventorySet - item.currentStock);
+        const weeksOfStock = item.currentStock / (item.inventorySet / 2);
+        const urgency = weeksOfStock < 1 ? 'Critical' : weeksOfStock < 2 ? 'High' : weeksOfStock < 4 ? 'Medium' : 'Low';
+        return {
+          orderPredicted,
+          weeksOfStock: Math.round(weeksOfStock * 10) / 10,
+          urgency
+        };
+      };
+
+      const getCategoryStats = (categoryName) => {
+        const items = categories[categoryName];
+        const total = items.length;
+        const checked = items.filter(item => item.checked).length;
+        const lowStock = items.filter(item => {
+          const calc = calculateRecommendedOrder(item);
+          return calc.urgency === 'Critical' || calc.urgency === 'High';
+        }).length;
+        return { total, checked, lowStock };
+      };
+
+      const generatePDFReport = () => {
+        const reportData = [];
+        const currentDate = new Date().toLocaleDateString();
+        Object.entries(categories).forEach(([categoryName, items]) => {
+          items.forEach(item => {
+            const calc = calculateRecommendedOrder(item);
+            reportData.push({
+              category: categoryName,
+              item: item.name,
+              unit: item.unit,
+              inventorySet: item.inventorySet,
+              currentStock: item.currentStock,
+              weeksOfStock: calc.weeksOfStock,
+              orderPredicted: calc.orderPredicted,
+              urgency: calc.urgency
+            });
+          });
+        });
+        const urgencyOrder = { 'Critical': 1, 'High': 2, 'Medium': 3, 'Low': 4 };
+        reportData.sort((a, b) => urgencyOrder[a.urgency] - urgencyOrder[b.urgency]);
+        const htmlContent = `
+          <html>
+            <head>
+              <title>Material Stocking Report</title>
+              <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                h1, h2 { text-align: center; }
+                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; }
+              </style>
+            </head>
+            <body>
+              <h1>Material Stocking Report</h1>
+              <p>Generated on: ${currentDate}</p>
+              <h2>Summary</h2>
+              <p>Total Items: ${reportData.length}</p>
+              <p>Critical Stock Items: ${reportData.filter(item => item.urgency === 'Critical').length}</p>
+              <p>High Priority Items: ${reportData.filter(item => item.urgency === 'High').length}</p>
+              <table>
+                <tr>
+                  <th>Category</th><th>Item</th><th>Unit</th><th>Inventory Set</th><th>Current Stock</th><th>Weeks of Stock</th><th>Order Predicted</th><th>Urgency</th>
+                </tr>
+                ${reportData.map(item => `
+                  <tr>
+                    <td>${item.category}</td>
+                    <td>${item.item}</td>
+                    <td>${item.unit}</td>
+                    <td>${item.inventorySet}</td>
+                    <td>${item.currentStock}</td>
+                    <td>${item.weeksOfStock}</td>
+                    <td>${item.orderPredicted}</td>
+                    <td>${item.urgency}</td>
+                  </tr>
+                `).join('')}
+              </table>
+            </body>
+          </html>
+        `;
+        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `Material_Stocking_Report_${currentDate.replace(/\//g, '-')}.html`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      };
+
+      return (
+        <div className="container mx-auto p-4">
+          <div className="bg-white shadow rounded-lg p-6 mb-6">
+            <div className="flex justify-between items-center mb-4">
+              <h1 className="text-2xl font-bold flex items-center gap-2">
+                <Package /> Material Stocking Management
+              </h1>
+              <button
+                onClick={generatePDFReport}
+                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+              >
+                <FileText /> Generate Report
+              </button>
+            </div>
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold mb-2">Add New Category</h2>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  placeholder="Enter category name..."
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  onKeyPress={(e) => e.key === 'Enter' && addCategory()}
+                />
+                <button
+                  onClick={addCategory}
+                  className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 flex items-center gap-2"
+                >
+                  <Plus /> Add Category
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Object.entries(categories).map(([categoryName, items]) => {
+              const stats = getCategoryStats(categoryName);
+              return (
+                <div key={categoryName} className="bg-white shadow rounded-lg p-4">
+                  <div className="flex justify-between items-center mb-4">
+                    {editingCategory === categoryName ? (
+                      <input
+                        type="text"
+                        defaultValue={categoryName}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            renameCategory(categoryName, e.target.value);
+                          }
+                        }}
+                        onBlur={(e) => renameCategory(categoryName, e.target.value)}
+                        autoFocus
+                      />
+                    ) : (
+                      <h2 className="text-xl font-semibold">{categoryName}</h2>
+                    )}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setEditingCategory(categoryName)}
+                        className="p-1 hover:bg-white/20 rounded transition-colors"
+                      >
+                        <Edit2 />
+                      </button>
+                      <button
+                        onClick={() => deleteCategory(categoryName)}
+                        className="p-1 hover:bg-white/20 rounded transition-colors"
+                      >
+                        <Trash2 />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="mb-4 flex gap-4 text-sm">
+                    <p className="flex items-center gap-1">
+                      <Clipboard size=const { Plus, Trash2, Edit2, Check, X, Package, Clipboard, FileText, Download, Calculator, TrendingUp } = window.lucide;
+
+    const MaterialStockingApp = () => {
+      const [categories, setCategories] = useState(() => {
+        const saved = localStorage.getItem('materialStockingData');
+        return saved ? JSON.parse(saved) : {
+          'Office Supplies': [
+            { id: 1, name: 'Printer Paper', checked: false, inventorySet: 10, currentStock: 5, unit: 'reams' },
+            { id: 2, name: 'Ink Cartridges', checked: true, inventorySet: 2, currentStock: 3, unit: 'pieces' },
+            { id: 3, name: 'Pens & Pencils', checked: false, inventorySet: 20, currentStock: 8, unit: 'pieces' }
+          ],
+          'Cleaning Supplies': [
+            { id: 4, name: 'Disinfectant', checked: false, inventorySet: 5, currentStock: 2, unit: 'bottles' },
+            { id: 5, name: 'Paper Towels', checked: true, inventorySet: 8, currentStock: 12, unit: 'rolls' },
+            { id: 6, name: 'Trash Bags', checked: false, inventorySet: 3, currentStock: 1, unit: 'boxes' }
+          ],
+          'Kitchen Items': [
+            { id: 7, name: 'Coffee', checked: false, inventorySet: 2, currentStock: 0, unit: 'kg' },
+            { id: 8, name: 'Disposable Cups', checked: false, inventorySet: 200, currentStock: 50, unit: 'pieces' }
+          ]
+        };
+      });
+      const [newCategoryName, setNewCategoryName] = useState('');
+      const [newItemName, setNewItemName] = useState('');
+      const [newItemInventorySet, setNewItemInventorySet] = useState('');
+      const [newItemStock, setNewItemStock] = useState('');
+      const [newItemUnit, setNewItemUnit] = useState('');
+      const [editingItem, setEditingItem] = useState(null);
+      const [editingCategory, setEditingCategory] = useState(null);
+      const [activeCategory, setActiveCategory] = useState('');
+      const [showStockUpdate, setShowStockUpdate] = useState({});
+      const [stockUpdateValues, setStockUpdateValues] = useState({});
+      const [editFormValues, setEditFormValues] = useState({});
+
+      useEffect(() => {
+        localStorage.setItem('materialStockingData', JSON.stringify(categories));
+      }, [categories]);
+
+      const generateId = () => Date.now() + Math.random();
+
+      const addCategory = () => {
+        if (newCategoryName.trim() && !categories[newCategoryName.trim()]) {
+          setCategories({
+            ...categories,
+            [newCategoryName.trim()]: []
+          });
+          setNewCategoryName('');
+        }
+      };
+
+      const deleteCategory = (categoryName) => {
+        const newCategories = { ...categories };
+        delete newCategories[categoryName];
+        setCategories(newCategories);
+        if (activeCategory === categoryName) {
+          setActiveCategory('');
+        }
+      };
+
+      const renameCategory = (oldName, newName) => {
+        if (newName.trim() && newName !== oldName && !categories[newName]) {
+          const newCategories = { ...categories };
+          newCategories[newName] = newCategories[oldName];
+          delete newCategories[oldName];
+          setCategories(newCategories);
+          if (activeCategory === oldName) {
+            setActiveCategory(newName);
+          }
+        }
+        setEditingCategory(null);
+      };
+
+      const addItem = (categoryName) => {
+        if (newItemName.trim() && newItemInventorySet && newItemStock !== '' && newItemUnit.trim()) {
+          setCategories({
+            ...categories,
+            [categoryName]: [
+              ...categories[categoryName],
+              {
+                id: generateId(),
+                name: newItemName.trim(),
+                checked: false,
+                inventorySet: parseFloat(newItemInventorySet),
+                currentStock: parseFloat(newItemStock),
+                unit: newItemUnit.trim()
+              }
+            ]
+          });
+          setNewItemName('');
+          setNewItemInventorySet('');
+          setNewItemStock('');
+          setNewItemUnit('');
+        }
+      };
+
+      const deleteItem = (categoryName, itemId) => {
+        setCategories({
+          ...categories,
+          [categoryName]: categories[categoryName].filter(item => item.id !== itemId)
+        });
+      };
+
+      const toggleItem = (categoryName, itemId) => {
+        setCategories({
+          ...categories,
+          [categoryName]: categories[categoryName].map(item =>
+            item.id === itemId ? { ...item, checked: !item.checked } : item
+          )
+        });
+      };
+
+      const updateItem = (categoryName, itemId, updates) => {
+        setCategories({
+          ...categories,
+          [categoryName]: categories[categoryName].map(item =>
+            item.id === itemId ? { ...item, ...updates } : item
+          )
+        });
+      };
+
+      const startEditingItem = (item) => {
+        setEditingItem(item.id);
+        setEditFormValues({
+          name: item.name,
+          inventorySet: item.inventorySet,
+          currentStock: item.currentStock,
+          unit: item.unit
+        });
+      };
+
+      const saveEditedItem = (categoryName, itemId) => {
+        updateItem(categoryName, itemId, editFormValues);
+        setEditingItem(null);
+        setEditFormValues({});
+      };
+
+      const cancelEditing = () => {
+        setEditingItem(null);
+        setEditFormValues({});
+      };
+
+      const updateStock = (categoryName, itemId) => {
+        const newStock = stockUpdateValues[itemId];
+        if (newStock !== '' && !isNaN(newStock)) {
+          updateItem(categoryName, itemId, { currentStock: parseFloat(newStock) });
+          setShowStockUpdate({ ...showStockUpdate, [itemId]: false });
+          setStockUpdateValues({ ...stockUpdateValues, [itemId]: '' });
+        }
+      };
+
+      const calculateRecommendedOrder = (item) => {
+        const orderPredicted = Math.max(0, item.inventorySet - item.currentStock);
+        const weeksOfStock = item.currentStock / (item.inventorySet / 2);
+        const urgency = weeksOfStock < 1 ? 'Critical' : weeksOfStock < 2 ? 'High' : weeksOfStock < 4 ? 'Medium' : 'Low';
+        return {
+          orderPredicted,
+          weeksOfStock: Math.round(weeksOfStock * 10) / 10,
+          urgency
+        };
+      };
+
+      const getCategoryStats = (categoryName) => {
+        const items = categories[categoryName];
+        const total = items.length;
+        const checked = items.filter(item => item.checked).length;
+        const lowStock = items.filter(item => {
+          const calc = calculateRecommendedOrder(item);
+          return calc.urgency === 'Critical' || calc.urgency === 'High';
+        }).length;
+        return { total, checked, lowStock };
+      };
+
+      const generatePDFReport = () => {
+        const reportData = [];
+        const currentDate = new Date().toLocaleDateString();
+        Object.entries(categories).forEach(([categoryName, items]) => {
+          items.forEach(item => {
+            const calc = calculateRecommendedOrder(item);
+            reportData.push({
+              category: categoryName,
+              item: item.name,
+              unit: item.unit,
+              inventorySet: item.inventorySet,
+              currentStock: item.currentStock,
+              weeksOfStock: calc.weeksOfStock,
+              orderPredicted: calc.orderPredicted,
+              urgency: calc.urgency
+            });
+          });
+        });
+        const urgencyOrder = { 'Critical': 1, 'High': 2, 'Medium': 3, 'Low': 4 };
+        reportData.sort((a, b) => urgencyOrder[a.urgency] - urgencyOrder[b.urgency]);
+        const htmlContent = `
+          <html>
+            <head>
+              <title>Material Stocking Report</title>
+              <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                h1, h2 { text-align: center; }
+                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; }
+              </style>
+            </head>
+            <body>
+              <h1>Material Stocking Report</h1>
+              <p>Generated on: ${currentDate}</p>
+              <h2>Summary</h2>
+              <p>Total Items: ${reportData.length}</p>
+              <p>Critical Stock Items: ${reportData.filter(item => item.urgency === 'Critical').length}</p>
+              <p>High Priority Items: ${reportData.filter(item => item.urgency === 'High').length}</p>
+              <table>
+                <tr>
+                  <th>Category</th><th>Item</th><th>Unit</th><th>Inventory Set</th><th>Current Stock</th><th>Weeks of Stock</th><th>Order Predicted</th><th>Urgency</th>
+                </tr>
+                ${reportData.map(item => `
+                  <tr>
+                    <td>${item.category}</td>
+                    <td>${item.item}</td>
+                    <td>${item.unit}</td>
+                    <td>${item.inventorySet}</td>
+                    <td>${item.currentStock}</td>
+                    <td>${item.weeksOfStock}</td>
+                    <td>${item.orderPredicted}</td>
+                    <td>${item.urgency}</td>
+                  </tr>
+                `).join('')}
+              </table>
+            </body>
+          </html>
+        `;
+        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `Material_Stocking_Report_${currentDate.replace(/\//g, '-')}.html`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      };
+
+      return (
+        <div className="container mx-auto p-4">
+          <div className="bg-white shadow rounded-lg p-6 mb-6">
+            <div className="flex justify-between items-center mb-4">
+              <h1 className="text-2xl font-bold flex items-center gap-2">
+                <Package /> Material Stocking Management
+              </h1>
+              <button
+                onClick={generatePDFReport}
+                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+              >
+                <FileText /> Generate Report
+              </button>
+            </div>
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold mb-2">Add New Category</h2>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  placeholder="Enter category name..."
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  onKeyPress={(e) => e.key === 'Enter' && addCategory()}
+                />
+                <button
+                  onClick={addCategory}
+                  className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 flex items-center gap-2"
+                >
+                  <Plus /> Add Category
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Object.entries(categories).map(([categoryName, items]) => {
+              const stats = getCategoryStats(categoryName);
+              return (
+                <div key={categoryName} className="bg-white shadow rounded-lg p-4">
+                  <div className="flex justify-between items-center mb-4">
+                    {editingCategory === categoryName ? (
+                      <input
+                        type="text"
+                        defaultValue={categoryName}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            renameCategory(categoryName, e.target.value);
+                          }
+                        }}
+                        onBlur={(e) => renameCategory(categoryName, e.target.value)}
+                        autoFocus
+                      />
+                    ) : (
+                      <h2 className="text-xl font-semibold">{categoryName}</h2>
+                    )}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setEditingCategory(categoryName)}
+                        className="p-1 hover:bg-white/20 rounded transition-colors"
+                      >
+                        <Edit2 />
+                      </button>
+                      <button
+                        onClick={() => deleteCategory(categoryName)}
+                        className="p-1 hover:bg-white/20 rounded transition-colors"
+                      >
+                        <Trash2 />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="mb-4 flex gap-4 text-sm">
+                    <p className="flex items-center gap-1">
+                      <Clipboard size=14 /> {stats.checked} of {stats.total} items completed
+                    </p>
+                    {stats.lowStock > 0 && (
+                      <p className="flex items-center gap-1 text-red-600">
+                        <TrendingUp size=14 /> {stats.lowStock} low stock
+                      </p>
+                    )}
+                  </div>
+                  {stats.total > 0 && (
+                    <div className="mb-4 h-2 bg-gray-200 rounded">
+                      <div
+                        className="h-full bg-indigo-600 rounded"
+                        style={{ width: `${(stats.checked / stats.total) * 100}%` }}
+                      ></div>
+                    </div>
+                  )}
+                  <div className="space-y-4">
+                    {items.map((item) => {
+                      const calc = calculateRecommendedOrder(item);
+                      const urgencyColor = {
+                        'Critical': 'text-red-600 bg-red-50',
+                        'High': 'text-orange-600 bg-orange-50',
+                        'Medium': 'text-blue-600 bg-blue-50',
+                        'Low': 'text-green-600 bg-green-50'
+                      };
+                      return (
+                        <div key={item.id} className="flex items-start gap-3 p-2 rounded">
+                          <input
+                            type="checkbox"
+                            checked={item.checked}
+                            onChange={() => toggleItem(categoryName, item.id)}
+                            className="w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500 mt-1"
+                          />
+                          <div className="flex-1">
+                            {editingItem === item.id ? (
+                              <div className="space-y-2">
+                                <input
+                                  type="text"
+                                  value={editFormValues.name || ''}
+                                  onChange={(e) => setEditFormValues({ ...editFormValues, name: e.target.value })}
+                                  placeholder="Item name"
+                                  className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                />
+                                <div className="flex gap-2">
+                                  <input
+                                    type="number"
+                                    value={editFormValues.inventorySet || ''}
+                                    onChange={(e) => setEditFormValues({ ...editFormValues, inventorySet: parseFloat(e.target.value) || 0 })}
+                                    placeholder="Inventory Set"
+                                    className="px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                  />
+                                  <input
+                                    type="number"
+                                    value={editFormValues.currentStock || ''}
+                                    onChange={(e) => setEditFormValues({ ...editFormValues, currentStock: parseFloat(e.target.value) || 0 })}
+                                    placeholder="Current stock"
+                                    className="px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                  />
+                                  <input
+                                    type="text"
+                                    value={editFormValues.unit || ''}
+                                    onChange={(e) => setEditFormValues({ ...editFormValues, unit: e.target.value })}
+                                    placeholder="Unit"
+                                    className="px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                  />
+                                </div>
+                                <div className="flex gap-2">
+                                  <button
+                                    onClick={() => saveEditedItem(categoryName, item.id)}
+                                    className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 transition-colors flex items-center gap-1"
+                                  >
+                                    <Check size=14 /> Save
+                                  </button>
+                                  <button
+                                    onClick={cancelEditing}
+                                    className="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700 transition-colors flex items-center gap-1"
+                                  >
+                                    <X size=14 /> Cancel
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div>
+                                <div className="flex justify-between items-center">
+                                  <h3 className="font-medium">{item.name}</h3>
+                                  <div className="flex gap-2">
+                                    <button
+                                      onClick={() => startEditingItem(item)}
+                                      className="p-1 text-gray-400 hover:text-indigo-600 transition-colors"
+                                    >
+                                      <Edit2 size=14 />
+                                    </button>
+                                    <button
+                                      onClick={() => deleteItem(categoryName, item.id)}
+                                      className="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                                    >
+                                      <Trash2 size=14 />
+                                    </button>
+                                  </div>
+                                </div>
+                                <div className="text-sm text-gray-600 space-y-1 mt-1">
+                                  <p className="flex items-center gap-1">
+                                    <Package size=14 /> Inventory Set: {item.inventorySet} {item.unit}
+                                  </p>
+                                  <p className="flex items-center gap-1">
+                                    <Clipboard size=14 /> Current Stock: 
+                                    {showStockUpdate[item.id] ? (
+                                      <span>
+                                        <input
+                                          type="number"
+                                          value={stockUpdateValues[item.id] || ''}
+                                          onChange={(e) => setStockUpdateValues({ ...stockUpdateValues, [item.id]: e.target.value })}
+                                          className="w-16 px-1 py-0.5 border border-gray-300 rounded text-xs"
+                                        />
+                                        <button
+                                          onClick={() => updateStock(categoryName, item.id)}
+                                          className="p-0.5 text-green-600 hover:text-green-800"
+                                        >
+                                          <Check size=14 />
+                                        </button>
+                                        <button
+                                          onClick={() => {
+                                            setShowStockUpdate({ ...showStockUpdate, [item.id]: false });
+                                            setStockUpdateValues({ ...stockUpdateValues, [item.id]: '' });
+                                          }}
+                                          className="p-0.5 text-red-600 hover:text-red-800"
+                                        >
+                                          <X size=14 />
+                                        </button>
+                                      </span>
+                                    ) : (
+                                      <button
+                                        onClick={() => setShowStockUpdate({ ...showStockUpdate, [item.id]: true })}
+                                        className="text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
+                                      >
+                                        {item.currentStock} {item.unit} <Edit2 size=14 />
+                                      </button>
+                                    )}
+                                  </p>
+                                  <p className="flex items-center gap-1">
+                                    <Calculator size=14 /> Weeks of stock: {calc.weeksOfStock}
+                                  </p>
+                                  <p className={`flex items-center gap-1 ${urgencyColor[calc.urgency]}`}>
+                                    <TrendingUp size=14 /> {calc.urgency} - Order Predicted: {calc.orderPredicted} {item.unit}
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-4">
+                    <h3 className="text-lg font-semibold mb-2">Add New Item</h3>
+                    <div className="grid grid-cols-2 gap-2">
+                      <input
+                        type="text"
+                        value={activeCategory === categoryName ? newItemName : ''}
+                        onChange={(e) => {
+                          setNewItemName(e.target.value);
+                          setActiveCategory(categoryName);
+                        }}
+                        placeholder="Item name..."
+                        className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                      <input
+                        type="number"
+                        value={activeCategory === categoryName ? newItemInventorySet : ''}
+                        onChange={(e) => {
+                          setNewItemInventorySet(e.target.value);
+                          setActiveCategory(categoryName);
+                        }}
+                        placeholder="Inventory Set..."
+                        className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                      <input
+                        type="number"
+                        value={activeCategory === categoryName ? newItemStock : ''}
+                        onChange={(e) => {
+                          setNewItemStock(e.target.value);
+                          setActiveCategory(categoryName);
+                        }}
+                        placeholder="Current stock..."
+                        className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                      <input
+                        type="text"
+                        value={activeCategory === categoryName ? newItemUnit : ''}
+                        onChange={(e) => {
+                          setNewItemUnit(e.target.value);
+                          setActiveCategory(categoryName);
+                        }}
+                        placeholder="Unit (e.g., pieces)..."
+                        className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                    </div>
+                    <button
+                      onClick={() => {
+                        addItem(categoryName);
+                        setActiveCategory('');
+                      }}
+                      className="mt-2 w-full px-3 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 flex items-center justify-center gap-2 text-sm"
+                    >
+                      <Plus /> Add Item
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          {Object.keys(categories).length === 0 && (
+            <div className="text-center py-8">
+              <p className="text-xl font-semibold">No Categories Yet</p>
+              <p>Create your first category to start managing your materials.</p>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    ReactDOM.render(<MaterialStockingApp />, document.getElementById('root'));
+  </script>
+</body>
+</html>
